@@ -7,20 +7,20 @@ public class Main {
 
         for ( ; ; ) {
 
-            System.out.println("Введите путь к файлу");
+            System.out.println("Р’РІРµРґРёС‚Рµ РїСѓС‚СЊ Рє С„Р°Р№Р»Сѓ");
             String path = new Scanner(System.in).nextLine();
             File file = new File(path);
             boolean fileExists = file.exists();
             boolean isDirectory = file.isDirectory();
 
             if (!fileExists || isDirectory) {
-                System.out.println("Файл не существует или указанный путь является путём к папке");
+                System.out.println("Р¤Р°Р№Р» РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ РёР»Рё СѓРєР°Р·Р°РЅРЅС‹Р№ РїСѓС‚СЊ СЏРІР»СЏРµС‚СЃСЏ РїСѓС‚С‘Рј Рє РїР°РїРєРµ");
                 continue;
             } else {
-                System.out.println("Путь указан верно");
+                System.out.println("РџСѓС‚СЊ СѓРєР°Р·Р°РЅ РІРµСЂРЅРѕ");
                 count++;
             }
-            System.out.println("Это файл номер " + count);
+            System.out.println("Р­С‚Рѕ С„Р°Р№Р» РЅРѕРјРµСЂ " + count);
         }
     }
 }
