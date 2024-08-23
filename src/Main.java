@@ -5,6 +5,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
         int countFiles = 0;
         int countLines = 0;
+        int countGoogleBotRequests = 0;
+        int countYandexBotRequests = 0;
         int maxLineLength = 0;
         int minLineLength = 1024;
 
@@ -46,11 +48,31 @@ public class Main {
                     if (length < minLineLength) {
                         minLineLength = length;
                     }
+
+                    String[] parts = line.split(";");
+                    if (parts.length >= 2) {
+                        String fragment2 = parts[1];
+                        String newFragment2 = fragment2.replaceAll(" ", "");
+
+                        String[] partsOfFragment2 = newFragment2.split("/");
+                        String botName = partsOfFragment2[0];
+
+                        if (botName.equals("Googlebot")) {
+                            countGoogleBotRequests++;
+                        }
+
+                        if (botName.equals("YandexBot")) {
+                            countYandexBotRequests++;
+                        }
+                    }
                 }
 
+                double googleBotReguestsShare = (double) countGoogleBotRequests / countLines;
+                double yandexBotReguestsShare = (double) countYandexBotRequests / countLines;
+
                 System.out.println("Количество строк в файле: " + countLines);
-                System.out.println("Максимальная длина строки в файле в символах: " + maxLineLength);
-                System.out.println("Минимальная длина строки в файле в символах: " + minLineLength);
+                System.out.println("Доля запросов от Googlebot: " + googleBotReguestsShare);
+                System.out.println("Доля запросов от YandexBot: " + yandexBotReguestsShare);
                 System.out.println();
 
             } catch (Exception ex) {
