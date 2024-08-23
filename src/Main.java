@@ -1,11 +1,14 @@
-import java.io.File;
+import java.io.*;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        int count = 0;
+    public static void main(String[] args) throws IOException {
+        int countFiles = 0;
+        int countLines = 0;
+        int maxLineLength = 0;
+        int minLineLength = 1024;
 
-        for ( ; ; ) {
+        for (; ; ) {
 
             System.out.println("Введите путь к файлу");
             String path = new Scanner(System.in).nextLine();
@@ -18,10 +21,44 @@ public class Main {
                 continue;
             } else {
                 System.out.println("Путь указан верно");
-                count++;
+                countFiles++;
             }
-            System.out.println("Это файл номер " + count);
+            System.out.println("Это файл номер " + countFiles);
+
+            try {
+                FileReader fileReader = new FileReader(path);
+                BufferedReader reader = new BufferedReader(fileReader);
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    int length = line.length();
+
+                    if (length > 1024) {
+                        throw new StringLenghException("В файле найдена строка длиной более 1024 символов");
+                    }
+
+                    countLines++;
+
+                    if (length > maxLineLength) {
+                        maxLineLength = length;
+                    }
+
+                    if (length < minLineLength) {
+                        minLineLength = length;
+                    }
+                }
+
+                System.out.println("Количество строк в файле: " + countLines);
+                System.out.println("Максимальная длина строки в файле в символах: " + maxLineLength);
+                System.out.println("Минимальная длина строки в файле в символах: " + minLineLength);
+                System.out.println();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }
+
+
 
