@@ -9,6 +9,7 @@ public class Main {
         int countYandexBotRequests = 0;
         int maxLineLength = 0;
         int minLineLength = 1024;
+        Statistics statistics = new Statistics();
 
         for (; ; ) {
 
@@ -65,6 +66,23 @@ public class Main {
                             countYandexBotRequests++;
                         }
                     }
+
+                    LogEntry logEntry = new LogEntry(line);
+                    System.out.println("IP-адрес: " + logEntry.getIpAddr());
+                    System.out.println("HTTP-метод: " + logEntry.getMethod());
+                    System.out.println("Путь: " + logEntry.getPath());
+                    System.out.println("Referer: " + logEntry.getReferer());
+                    System.out.println("Код ответа: " + logEntry.getResponseCode());
+                    System.out.println("Трафик: " + logEntry.getResponseSize());
+                    System.out.println("Дата и время: " + logEntry.getTime());
+                    System.out.println("UserAgent: " + logEntry.getUserAgent());
+
+                    UserAgent OSAndBrowser = new UserAgent(logEntry);
+                    System.out.println("Операционная система: " + OSAndBrowser.getOperatingSystem());
+                    System.out.println("Браузер: " + OSAndBrowser.getBrauser());
+                    System.out.println();
+
+                    statistics.addEntry(logEntry);
                 }
 
                 double googleBotReguestsShare = (double) countGoogleBotRequests / countLines;
@@ -73,6 +91,7 @@ public class Main {
                 System.out.println("Количество строк в файле: " + countLines);
                 System.out.println("Доля запросов от Googlebot: " + googleBotReguestsShare);
                 System.out.println("Доля запросов от YandexBot: " + yandexBotReguestsShare);
+                System.out.println("Средний объем трафика в час: " + statistics.getTrafficRate());
                 System.out.println();
 
             } catch (Exception ex) {
