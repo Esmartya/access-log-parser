@@ -1,5 +1,5 @@
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -92,6 +92,11 @@ public class Main {
                 System.out.println("Доля запросов от Googlebot: " + googleBotReguestsShare);
                 System.out.println("Доля запросов от YandexBot: " + yandexBotReguestsShare);
                 System.out.println("Средний объем трафика в час: " + statistics.getTrafficRate());
+                System.out.println("Список существующих страниц (код ответа 200): " + statistics.getExistingPagesSet());
+                System.out.println("Количество упоминаний браузеров " + statistics.getOSStatistics());
+                System.out.println("Доля упоминаний браузеров " + statistics.getOSShares());
+                System.out.println("Сумма долей упоминаний браузеров " + (statistics.getOSShares().get("Windows") + statistics.getOSShares().get("Linux") +
+                        statistics.getOSShares().get("Mac OS") + statistics.getOSShares().get("Other")));
                 System.out.println();
 
             } catch (Exception ex) {

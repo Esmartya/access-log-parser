@@ -1,5 +1,6 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class LogEntry {
     final String ipAddr;
@@ -21,7 +22,7 @@ public class LogEntry {
         String[] partOfParts3 = parts3[1].split(" ");
 
         String dateTime = partOfParts2[0];
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/LLL/yyyy:HH:mm:ss XXXX");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/LLL/yyyy:HH:mm:ss XXXX", Locale.ENGLISH);
 
         this.ipAddr = parts1[0];
         this.time = LocalDateTime.parse(dateTime, formatter);
