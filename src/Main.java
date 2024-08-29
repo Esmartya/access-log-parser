@@ -93,10 +93,18 @@ public class Main {
                 System.out.println("Доля запросов от YandexBot: " + yandexBotReguestsShare);
                 System.out.println("Средний объем трафика в час: " + statistics.getTrafficRate());
                 System.out.println("Список существующих страниц (код ответа 200): " + statistics.getExistingPagesSet());
-                System.out.println("Количество упоминаний браузеров " + statistics.getOSStatistics());
-                System.out.println("Доля упоминаний браузеров " + statistics.getOSShares());
-                System.out.println("Сумма долей упоминаний браузеров " + (statistics.getOSShares().get("Windows") + statistics.getOSShares().get("Linux") +
-                        statistics.getOSShares().get("Mac OS") + statistics.getOSShares().get("Other")));
+                System.out.println("Список несуществующих страниц (код ответа 404): " + statistics.getNotExistingPagesSet());
+                System.out.println("Количество упоминаний ОС " + statistics.getOSStatistics());
+                System.out.println("Доля упоминаний ОС " + statistics.getOSShares());
+                System.out.println("Сумма долей упоминаний ОС " + (statistics.getOSShares().get("Windows") +
+                        statistics.getOSShares().get("Linux") + statistics.getOSShares().get("Mac OS") +
+                        statistics.getOSShares().get("Other")));
+                System.out.println("Количество упоминаний браузеров " + statistics.getBrausersStatistics());
+                System.out.println("Доля упоминаний браузеров " + statistics.getBrausersShares());
+                System.out.println("Сумма долей упоминаний браузеров " + (statistics.getBrausersShares().get("Edge") +
+                        statistics.getBrausersShares().get("Opera") + statistics.getBrausersShares().get("Firefox") +
+                        statistics.getBrausersShares().get("Chrome") + statistics.getBrausersShares().get("Other")));
+
                 System.out.println();
 
             } catch (Exception ex) {
