@@ -1,5 +1,6 @@
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -8,12 +9,17 @@ public class Statistics {
     LocalDateTime minTime = LocalDateTime.now();
     LocalDateTime maxTime = LocalDateTime.of
             (1900, 12, 31, 00, 00);
+    int logTimeInHours;
     HashSet<String> existingPagesSet = new HashSet<>();
     HashSet<String> notExistingPagesSet = new HashSet<>();
     HashMap<String, Integer> oSStatistics = new HashMap<>();
     HashMap<String, Double> oSShares = new HashMap<>();
     HashMap<String, Integer> brausersStatistics = new HashMap<>();
     HashMap<String, Double> brausersShares = new HashMap<>();
+    int numberOfVisits;
+    int numberOfUnqueVisits;
+    int numberOfErrorResponses;
+    ArrayList<String> ipAddresses = new ArrayList<>();
 
     public Statistics() {
     }
@@ -28,12 +34,18 @@ public class Statistics {
             maxTime = logEntry.time;
         }
 
+        logTimeInHours = (int) Duration.between(minTime, maxTime).toSeconds() / 3600;
+
         if (logEntry.responseCode == 200) {
             existingPagesSet.add(logEntry.path);
         }
 
         if (logEntry.responseCode == 404) {
             notExistingPagesSet.add(logEntry.path);
+        }
+
+        if (logEntry.responseCode / 100 == 4 || logEntry.responseCode / 100 == 5) {
+            numberOfErrorResponses++;
         }
 
         if (logEntry.userAgent.contains("Windows") || logEntry.userAgent.contains("X11")) {
@@ -80,11 +92,19 @@ public class Statistics {
             brausersStatistics.putIfAbsent("Other", 1);
             brausersStatistics.merge("Other", 1, (a, b) -> a + b);
         }
+
+        if (!logEntry.isBot()) {
+            numberOfVisits++;
+        }
+
+        if (!logEntry.isBot() && !ipAddresses.contains(logEntry.ipAddr)) {
+            ipAddresses.add(logEntry.ipAddr);
+            numberOfUnqueVisits++;
+        }
     }
 
     public long getTrafficRate() {
-        long period = Duration.between(minTime, maxTime).toSeconds() / 3600;
-        return totalTraffic / period;
+        return totalTraffic / logTimeInHours;
     }
 
     public HashSet<String> getExistingPagesSet() {
@@ -127,5 +147,17 @@ public class Statistics {
         brausersShares.put("Other", brausersStatistics.get("Other") / sumOfBrausersShares);
 
         return brausersShares;
+    }
+
+    public int getNumberOfVisits() {
+        return numberOfVisits / logTimeInHours;
+    }
+
+    public int getAvgNumberOfUnqueVisits() {
+        return numberOfVisits / numberOfUnqueVisits;
+    }
+
+    public int getNumberOfErrorResponses() {
+        return numberOfErrorResponses / logTimeInHours;
     }
 }

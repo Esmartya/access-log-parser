@@ -92,8 +92,8 @@ public class Main {
                 System.out.println("Доля запросов от Googlebot: " + googleBotReguestsShare);
                 System.out.println("Доля запросов от YandexBot: " + yandexBotReguestsShare);
                 System.out.println("Средний объем трафика в час: " + statistics.getTrafficRate());
-                System.out.println("Список существующих страниц (код ответа 200): " + statistics.getExistingPagesSet());
-                System.out.println("Список несуществующих страниц (код ответа 404): " + statistics.getNotExistingPagesSet());
+//                System.out.println("Список существующих страниц (код ответа 200): " + statistics.getExistingPagesSet());
+//                System.out.println("Список несуществующих страниц (код ответа 404): " + statistics.getNotExistingPagesSet());
                 System.out.println("Количество упоминаний ОС " + statistics.getOSStatistics());
                 System.out.println("Доля упоминаний ОС " + statistics.getOSShares());
                 System.out.println("Сумма долей упоминаний ОС " + (statistics.getOSShares().get("Windows") +
@@ -104,7 +104,11 @@ public class Main {
                 System.out.println("Сумма долей упоминаний браузеров " + (statistics.getBrausersShares().get("Edge") +
                         statistics.getBrausersShares().get("Opera") + statistics.getBrausersShares().get("Firefox") +
                         statistics.getBrausersShares().get("Chrome") + statistics.getBrausersShares().get("Other")));
-
+                System.out.println("Количество посещений сайта в час (без ботов): " + statistics.getNumberOfVisits());
+                System.out.println("Количество посещений сайта (без ботов): " + statistics.numberOfVisits);
+                System.out.println("Количество ошибочных запросов в час: " + statistics.getNumberOfErrorResponses());
+                System.out.println("Количество ошибочных запросов: " + statistics.numberOfErrorResponses);
+                System.out.println("Средняя посещаемость одним пользователем: " + statistics.getAvgNumberOfUnqueVisits());
                 System.out.println();
 
             } catch (Exception ex) {

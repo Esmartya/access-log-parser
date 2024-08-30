@@ -65,4 +65,8 @@ public class LogEntry {
     public String getUserAgent() {
         return userAgent;
     }
+
+    public boolean isBot() {
+        return this.getUserAgent().toLowerCase().contains("bot");
+    }
 }
