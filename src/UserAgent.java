@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class UserAgent {
     final ArrayList<String> brauser;
     final ArrayList<String> operatingSystem;
+    final boolean isBot;
 
     public ArrayList<String> getBrauser() {
         return brauser;
@@ -16,6 +17,7 @@ public class UserAgent {
         ArrayList<String> brauser = new ArrayList<>();
         ArrayList<String> operatingSystem = new ArrayList<>();
         String userAgent = logEntry.getUserAgent();
+        boolean isBot;
 
         if (userAgent.contains("Windows") || userAgent.contains("X11")) {
             operatingSystem.add("Windows");
@@ -46,7 +48,14 @@ public class UserAgent {
             brauser.add("Other");
         }
 
+        isBot = logEntry.userAgent.toLowerCase().contains("bot");
+
         this.brauser = brauser;
         this.operatingSystem = operatingSystem;
+        this.isBot = isBot;
+    }
+
+    public boolean isBot() {
+        return isBot;
     }
 }

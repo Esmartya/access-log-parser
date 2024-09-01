@@ -109,8 +109,10 @@ public class Main {
                 System.out.println("Количество ошибочных запросов в час: " + statistics.getNumberOfErrorResponses());
                 System.out.println("Количество ошибочных запросов: " + statistics.numberOfErrorResponses);
                 System.out.println("Средняя посещаемость одним пользователем: " + statistics.getAvgNumberOfUnqueVisits());
+                System.out.println("Максимальная посещаемость сайта в секунду: " + statistics.getMaxVisitsPerSecond());
+                System.out.println("Список доменных имен: " + statistics.getDomainNames());
+                System.out.println("Максимальная посещаемость одним пользователем: " + statistics.getMaxVisitsPerUser());
                 System.out.println();
-
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

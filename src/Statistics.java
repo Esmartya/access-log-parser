@@ -1,8 +1,6 @@
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class Statistics {
     long totalTraffic;
@@ -20,11 +18,16 @@ public class Statistics {
     int numberOfUnqueVisits;
     int numberOfErrorResponses;
     ArrayList<String> ipAddresses = new ArrayList<>();
+    HashMap<LocalDateTime, Integer> visitsBySeconds = new HashMap<>();
+    HashMap<String, Integer> visitsOfUsers = new HashMap<>();
+    ArrayList<String> domainNames = new ArrayList<>();
 
     public Statistics() {
     }
 
     public void addEntry(LogEntry logEntry) {
+        UserAgent userAgent = new UserAgent(logEntry);
+
         totalTraffic += logEntry.getResponseSize();
 
         if (logEntry.time.isBefore(minTime)) {
@@ -93,13 +96,34 @@ public class Statistics {
             brausersStatistics.merge("Other", 1, (a, b) -> a + b);
         }
 
-        if (!logEntry.isBot()) {
+        if (!userAgent.isBot()) {
             numberOfVisits++;
         }
 
-        if (!logEntry.isBot() && !ipAddresses.contains(logEntry.ipAddr)) {
+        if (!userAgent.isBot() && !ipAddresses.contains(logEntry.ipAddr)) {
             ipAddresses.add(logEntry.ipAddr);
             numberOfUnqueVisits++;
+        }
+
+        if (!userAgent.isBot()) {
+            visitsBySeconds.merge(logEntry.time, 1, Integer::sum);
+        }
+
+        if (!userAgent.isBot()) {
+            visitsOfUsers.merge(logEntry.ipAddr, 1, Integer::sum);
+        }
+
+        if (logEntry.referer.contains("/")) {
+            String[] refererParts = logEntry.referer.split("/");
+            String domainName = refererParts[2];
+
+            if (!domainNames.contains(domainName)) {
+                domainNames.add(domainName);
+            } else if (logEntry.referer.contains("%")) {
+                if (!domainNames.contains("www.rbc.ru")) {
+                    domainNames.add("www.rbc.ru");
+                }
+            }
         }
     }
 
@@ -159,5 +183,21 @@ public class Statistics {
 
     public int getNumberOfErrorResponses() {
         return numberOfErrorResponses / logTimeInHours;
+    }
+
+    public int getMaxVisitsPerSecond() {
+        int maxVisitsPerSecond = visitsBySeconds.entrySet().stream().
+                max(Map.Entry.comparingByValue()).get().getValue();
+        return maxVisitsPerSecond;
+    }
+
+    public ArrayList<String> getDomainNames() {
+        return domainNames;
+    }
+
+    public int getMaxVisitsPerUser() {
+        int maxVisitsPerUser = visitsOfUsers.entrySet().stream().
+                max(Map.Entry.comparingByValue()).get().getValue();
+        return maxVisitsPerUser;
     }
 }
